@@ -186,21 +186,31 @@ function autoResize(el) {
   el.style.height = el.scrollHeight + 'px';
 }
 
+function toast(msg) {
+  const d = document.createElement('div');
+  d.textContent = msg;
+  Object.assign(d.style, {position:'fixed',bottom:'30px',left:'50%',transform:'translateX(-50%)',background:'#4a9eff',color:'#fff',padding:'8px 18px',borderRadius:'8px',fontSize:'14px',zIndex:'9999',opacity:'0',transition:'opacity .2s',whiteSpace:'nowrap',maxWidth:'80%',textAlign:'center',boxShadow:'0 4px 12px rgba(0,0,0,.4)'});
+  document.body.appendChild(d);
+  requestAnimationFrame(() => { d.style.opacity = '1'; });
+  setTimeout(() => { d.style.opacity = '0'; setTimeout(() => d.remove(), 200); }, 1200);
+}
 function saveEntry(gear) {
-  const input = document.getElementById(`input-${gear}`);
-  const text = input.value.trim();
-  if (!text) return;
-  const entries = getEntries();
-  entries.unshift({
-    gear,
-    text,
-    time: new Date().toLocaleString('zh-CN', { hour12: false }),
-    ts: Date.now(),
-  });
-  setEntries(entries);
-  input.value = '';
-  input.style.height = 'auto';
-  updateAll();
+  try {
+    const input = document.getElementById(`input-${gear}`);
+    const text = input.value.trim();
+    if (!text) { toast('写点什么再保存'); return; }
+    const entries = getEntries();
+    const now = new Date();
+    const timeStr = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0')+' '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+    entries.unshift({ gear, text, time: timeStr, ts: now.getTime() });
+    setEntries(entries);
+    input.value = '';
+    input.style.height = 'auto';
+    updateAll();
+    toast('✓ 已保存');
+  } catch(e) {
+    toast('保存失败: '+e.message);
+  }
 }
 
 function setPlaceholder(gear) {
