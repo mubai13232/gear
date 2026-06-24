@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>三齿轮</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0d0d0d;color:#d4d4d4;padding:0;min-height:100vh;display:flex;flex-direction:column}
+.header{padding:12px 16px 0;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:18px;font-weight:600;color:#eee;letter-spacing:1px}
+.header .sub{font-size:11px;color:#555;margin-top:2px}
+.tabs{display:flex;gap:3px;margin:10px 12px 0;padding:0}
+.tab{flex:1;padding:10px 0;text-align:center;font-size:13px;border:1px solid #222;border-radius:8px 8px 0 0;background:#111;color:#555;cursor:pointer;transition:all .15s;user-select:none;border-bottom:none}
+.tab.active{background:#1a1a1a;color:#eee;border-color:#333}
+.tab.active.g1{color:#4a9eff;border-color:#4a9eff}
+.tab.active.g2{color:#ff6b6b;border-color:#ff6b6b}
+.tab.active.g3{color:#51cf66;border-color:#51cf66}
+.tab.active.gv{color:#cc9aff;border-color:#cc9aff}
+.panel{display:none;padding:12px;flex:1;overflow-y:auto}
+.panel.active{display:block}
+.prompt{font-size:12px;color:#666;margin-bottom:10px;line-height:1.6;padding:8px 10px;background:#111;border-radius:6px;border-left:2px solid #333}
+.prompt .hl{color:#4a9eff}
+textarea{width:100%;min-height:120px;padding:10px;background:#111;border:1px solid #222;border-radius:6px;color:#d4d4d4;font-size:14px;line-height:1.6;resize:vertical;font-family:inherit;outline:none}
+textarea:focus{border-color:#4a9eff}
+.btn-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.btn{padding:7px 16px;border:1px solid #222;border-radius:5px;background:#151515;color:#999;font-size:12px;cursor:pointer;transition:all .1s;user-select:none}
+.btn:active{background:#222}
+.btn.primary{background:#4a9eff;border-color:#4a9eff;color:#fff;font-weight:500}
+.btn.primary:active{background:#3a8eef}
+.btn.danger{background:#2a1515;border-color:#442;color:#ff6b6b}
+.count-badge{display:inline-block;background:#1a1a2e;color:#4a9eff;font-size:11px;padding:1px 8px;border-radius:10px;margin-left:6px}
+
+/* 复盘区 */
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:12px}
+.stat-card{padding:10px;border-radius:6px;text-align:center;background:#111;border:1px solid #222}
+.stat-card .num{font-size:22px;font-weight:600}
+.stat-card .label{font-size:10px;color:#666;margin-top:2px}
+.stat-card.g1 .num{color:#4a9eff}
+.stat-card.g2 .num{color:#ff6b6b}
+.stat-card.g3 .num{color:#51cf66}
+.timeline{max-height:50vh;overflow-y:auto}
+.entry{background:#111;border:1px solid #222;border-radius:6px;padding:10px 12px;margin-bottom:6px}
+.entry .meta{font-size:11px;color:#555;margin-bottom:3px;display:flex;justify-content:space-between}
+.entry .gear-tag{display:inline-block;font-size:10px;padding:1px 6px;border-radius:3px;margin-right:4px}
+.entry .gear-tag.g1{color:#4a9eff;border:1px solid #1a2e4a}
+.entry .gear-tag.g2{color:#ff6b6b;border:1px solid #4a1a1a}
+.entry .gear-tag.g3{color:#51cf66;border:1px solid #1a3a1a}
+.entry .text{font-size:13px;line-height:1.5;white-space:pre-wrap;word-break:break-word}
+.empty{text-align:center;color:#444;padding:20px;font-size:13px}
+
+/* 设置区 */
+.setting-row{margin-bottom:10px}
+.setting-row label{display:block;font-size:12px;color:#666;margin-bottom:4px}
+.setting-row textarea{min-height:60px;font-size:12px}
+.hidden{display:none}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div><h1>⚙ 三齿轮</h1><div class="sub" id="counter">0 条记录</div></div>
+  <div style="display:flex;gap:4px">
+    <button class="btn" onclick="showSettings()" style="font-size:16px;padding:4px 10px">⚙</button>
+  </div>
+</div>
+
+<div class="tabs" id="tabBar">
+  <div class="tab active g1" data-tab="1">① 拆</div>
+  <div class="tab g2" data-tab="2">② 挖</div>
+  <div class="tab g3" data-tab="3">③ 产</div>
+  <div class="tab gv" data-tab="v">📊 复盘</div>
+</div>
+
+<!-- 齿轮1 -->
+<div class="panel" id="panel-1">
+  <div class="prompt">这个事的<b>真实结构</b>是什么？<br>2×2矩阵 / 剥三层 / 反事实推演</div>
+  <textarea id="input-1" placeholder="现象：..." oninput="autoResize(this)"></textarea>
+  <div class="btn-row">
+    <button class="btn primary" onclick="saveEntry(1)">保存</button>
+    <button class="btn" onclick="setPlaceholder(1)">💡 提示</button>
+  </div>
+  <div style="margin-top:10px" id="recent-1"></div>
+</div>
+
+<!-- 齿轮2 -->
+<div class="panel" id="panel-2">
+  <div class="prompt">人在<b>怕什么</b>？想要什么？懒得动什么？<br>嘴上说的和实际要的一样吗？</div>
+  <textarea id="input-2" placeholder="观察：..." oninput="autoResize(this)"></textarea>
+  <div class="btn-row">
+    <button class="btn primary" onclick="saveEntry(2)">保存</button>
+    <button class="btn" onclick="setPlaceholder(2)">💡 提示</button>
+  </div>
+  <div style="margin-top:10px" id="recent-2"></div>
+</div>
+
+<!-- 齿轮3 -->
+<div class="panel" id="panel-3">
+  <div class="prompt">这个洞察能变成<b>什么可用的东西</b>？<br>一个框架 / 三句话 / 一个行动 / 决策日志</div>
+  <textarea id="input-3" placeholder="产出：..." oninput="autoResize(this)"></textarea>
+  <div class="btn-row">
+    <button class="btn primary" onclick="saveEntry(3)">保存</button>
+    <button class="btn" onclick="setPlaceholder(3)">💡 提示</button>
+  </div>
+  <div style="margin-top:10px" id="recent-3"></div>
+</div>
+
+<!-- 复盘 -->
+<div class="panel" id="panel-v">
+  <div class="stats">
+    <div class="stat-card g1"><div class="num" id="s1">0</div><div class="label">① 拆结构</div></div>
+    <div class="stat-card g2"><div class="num" id="s2">0</div><div class="label">② 挖人性</div></div>
+    <div class="stat-card g3"><div class="num" id="s3">0</div><div class="label">③ 压产出</div></div>
+  </div>
+  <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap">
+    <button class="btn" onclick="filterReview('all')">全部</button>
+    <button class="btn" style="border-color:#4a9eff;color:#4a9eff" onclick="filterReview(1)">① 拆</button>
+    <button class="btn" style="border-color:#ff6b6b;color:#ff6b6b" onclick="filterReview(2)">② 挖</button>
+    <button class="btn" style="border-color:#51cf66;color:#51cf66" onclick="filterReview(3)">③ 产</button>
+    <button class="btn" onclick="filterReview('today')">今天</button>
+    <button class="btn" onclick="filterReview('week')">本周</button>
+  </div>
+  <div class="timeline" id="timeline"></div>
+</div>
+
+<!-- 设置面板 -->
+<div class="panel" id="panel-settings">
+  <div class="setting-row">
+    <label>导出数据（复制到电脑/data.json）</label>
+    <textarea id="exportData" readonly onclick="this.select();document.execCommand('copy')"></textarea>
+    <div class="btn-row"><button class="btn" onclick="copyExport()">📋 复制</button></div>
+  </div>
+  <div class="setting-row">
+    <label>导入数据（粘贴电脑/data.json 的内容）</label>
+    <textarea id="importData" placeholder="粘贴 JSON..." style="min-height:60px"></textarea>
+    <div class="btn-row"><button class="btn primary" onclick="importFromData()">导入并覆盖</button><button class="btn danger" onclick="clearAll()">清空所有记录</button></div>
+  </div>
+  <div class="setting-row">
+    <label>说明</label>
+    <div style="font-size:12px;color:#555;line-height:1.6">
+      <b>跨设备同步：</b><br>
+      电脑 → 手机：电脑上运行 <code style="background:#1a1a1a;padding:1px 4px;border-radius:2px">gear export</code> 导出到 Obsidian，或复制 data.json 的内容<br>
+      手机 → 电脑：在"设置"里复制导出内容，电脑上粘贴到 gear-data/data.json<br><br>
+      也可以在电脑上运行 <code style="background:#1a1a1a;padding:1px 4px;border-radius:2px">gear serve</code> 启动局域网服务，手机直接访问。
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'gear_entries';
+const PROMPTS = {
+  1: [
+    '画2×2：横轴和纵轴分别是什么？',
+    '剥三层：现象→结构→根因',
+    '反事实推演：去掉/反转/冲击关键变量会怎样？',
+    '找到隐藏的二元结构',
+    '锚点：四种角色→清醒×行动',
+  ],
+  2: [
+    '他在怕什么？想要什么？懒得动什么？',
+    '疼痛vs焦虑：这个需求在哪个象限？',
+    '利益地图：嘴上说的和实际要的一样吗？',
+    '锚点：生意人最怕被替代',
+    '校验：他为什么没做我建议的事？（答案不能是"懒"）',
+  ],
+  3: [
+    '能不能用一个框架/三句话/一张图装起来？',
+    '写一个行动：这个洞察能让你做什么？',
+    '更新决策日志：预计发生什么？什么信号验证/证伪？',
+    '锚点：疼痛vs焦虑定位表',
+    '这个能产品化吗？最小可行形态是什么？',
+  ],
+};
+
+function getEntries() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; }
+}
+function setEntries(entries) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+
+function saveEntry(gear) {
+  const input = document.getElementById(`input-${gear}`);
+  const text = input.value.trim();
+  if (!text) return;
+  const entries = getEntries();
+  entries.unshift({
+    gear,
+    text,
+    time: new Date().toLocaleString('zh-CN', { hour12: false }),
+    ts: Date.now(),
+  });
+  setEntries(entries);
+  input.value = '';
+  input.style.height = 'auto';
+  updateAll();
+}
+
+function setPlaceholder(gear) {
+  const ps = PROMPTS[gear];
+  document.getElementById(`input-${gear}`).placeholder = ps[Math.floor(Math.random() * ps.length)];
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab == tab));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  const panelMap = { 1:'panel-1', 2:'panel-2', 3:'panel-3', v:'panel-v', s:'panel-settings' };
+  document.getElementById(panelMap[tab] || 'panel-1').classList.add('active');
+  if (tab == 'v') renderReview('all');
+}
+
+// Tab click
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => switchTab(t.dataset.tab));
+});
+
+function updateAll() {
+  const entries = getEntries();
+  document.getElementById('counter').textContent = `${entries.length} 条记录`;
+  // Stats
+  const counts = {1:0,2:0,3:0};
+  entries.forEach(e => { counts[e.gear] = (counts[e.gear]||0)+1; });
+  document.getElementById('s1').textContent = counts[1];
+  document.getElementById('s2').textContent = counts[2];
+  document.getElementById('s3').textContent = counts[3];
+  // Recent per gear
+  [1,2,3].forEach(g => {
+    const el = document.getElementById(`recent-${g}`);
+    const gEntries = entries.filter(e => e.gear == g).slice(0, 3);
+    if (gEntries.length == 0) { el.innerHTML = ''; return; }
+    el.innerHTML = gEntries.map(e => `<div class="entry"><div class="meta">${e.time}</div><div class="text">${escapeHtml(e.text)}</div></div>`).join('');
+  });
+  // Export
+  document.getElementById('exportData').value = JSON.stringify(entries, null, 2);
+}
+
+function escapeHtml(t) {
+  const d = document.createElement('div');
+  d.textContent = t;
+  return d.innerHTML;
+}
+
+function renderReview(filter) {
+  let entries = getEntries();
+  const now = new Date();
+  const todayStr = now.toLocaleDateString('zh-CN');
+  const weekAgo = now.getTime() - 7*24*60*60*1000;
+
+  if (filter === 'today') entries = entries.filter(e => e.time.startsWith(todayStr) || new Date(e.ts).toLocaleDateString('zh-CN') === todayStr);
+  else if (filter === 'week') entries = entries.filter(e => e.ts > weekAgo);
+  else if ([1,2,3].includes(filter)) entries = entries.filter(e => e.gear === filter);
+
+  const el = document.getElementById('timeline');
+  if (entries.length === 0) {
+    el.innerHTML = '<div class="empty">暂无记录</div>';
+    return;
+  }
+  const gearNames = {1:'① 拆结构', 2:'② 挖人性', 3:'③ 压产出'};
+  el.innerHTML = entries.map(e =>
+    `<div class="entry">
+      <div class="meta">
+        <span><span class="gear-tag g${e.gear}">${gearNames[e.gear]||'?'}</span></span>
+        <span style="color:#444;font-size:10px">${e.time}</span>
+      </div>
+      <div class="text">${escapeHtml(e.text)}</div>
+    </div>`
+  ).join('');
+}
+
+function filterReview(f) {
+  renderReview(f);
+}
+
+function showSettings() {
+  updateAll();
+  switchTab('s');
+}
+
+function copyExport() {
+  const el = document.getElementById('exportData');
+  el.select();
+  document.execCommand('copy');
+  alert('已复制');
+}
+
+function importFromData() {
+  const raw = document.getElementById('importData').value.trim();
+  if (!raw) return;
+  try {
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) throw new Error('格式错误');
+    setEntries(parsed);
+    document.getElementById('importData').value = '';
+    updateAll();
+    alert(`已导入 ${parsed.length} 条记录`);
+  } catch(e) {
+    alert('JSON 格式错误，请检查');
+  }
+}
+
+function clearAll() {
+  if (confirm('确定清空所有记录？此操作不可恢复。')) {
+    setEntries([]);
+    updateAll();
+  }
+}
+
+// 双击清空textarea
+document.querySelectorAll('textarea').forEach(t => {
+  t.addEventListener('dblclick', () => { t.value = ''; t.style.height = 'auto'; });
+});
+
+// Init
+updateAll();
+
+// Keyboard shortcut: Ctrl+Enter to save on any textarea
+document.addEventListener('keydown', e => {
+  if (e.ctrlKey && e.key === 'Enter') {
+    const active = document.querySelector('.panel.active textarea');
+    if (active) {
+      const id = active.id;
+      const gear = parseInt(id.replace('input-', ''));
+      if (gear) saveEntry(gear);
+    }
+  }
+});
+</script>
+</body>
+</html>
