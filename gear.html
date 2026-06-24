@@ -112,15 +112,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 
 <!-- 设置 -->
 <div class="panel" id="ps">
-  <div class="setting-group"><label>导出</label><textarea id="exportData" readonly></textarea><div class="btn-row"><button class="btn" onclick="copyExport()">📋 复制</button></div></div>
-  <div class="setting-group"><label>导入</label><textarea id="importData" placeholder="粘贴 JSON..."></textarea><div class="btn-row"><button class="btn primary" onclick="importData()">导入</button></div></div>
+  <div class="input-area" style="margin-bottom:10px">
+    <label>🔗 AI 服务器地址</label>
+    <div style="font-size:11px;color:#666;margin-bottom:4px">手机连不上时，在这里填电脑 `gear serve` 显示的地址</div>
+    <div style="display:flex;gap:4px">
+      <input id="serverUrl" type="text" style="flex:1;padding:7px 10px;background:#151515;border:1px solid #2a2a2a;border-radius:4px;color:#d4d4d4;font-size:13px;outline:none" placeholder="http://192.168.x.x:8899" value="">
+      <button class="btn primary" onclick="saveServerUrl()">保存</button>
+      <button class="btn" onclick="checkServer()" style="color:#4a9eff">检测</button>
+    </div>
+    <div id="serverStatus" style="font-size:11px;margin-top:4px"></div>
+  </div>
+  <div class="setting-group"><label>📋 导出数据</label><textarea id="exportData" readonly></textarea><div class="btn-row"><button class="btn" onclick="copyExport()">复制</button></div></div>
+  <div class="setting-group"><label>📥 导入数据</label><textarea id="importData" placeholder="粘贴 JSON..."></textarea><div class="btn-row"><button class="btn primary" onclick="importData()">导入</button></div></div>
 </div>
 
 <div class="toast-container" id="toastBox"></div>
 
 <script>
 const KEY='gear_entries';const NAMES={1:'① 拆结构',2:'② 挖人性',3:'③ 压产出'};
-const API_BASE = window.location.origin;
+const STORED_API = localStorage.getItem('gear_api_url');
+const API_BASE = STORED_API || window.location.origin;
+const IS_LOCAL = !window.location.host.includes('github.io') && !window.location.host.includes('pages.dev');
 
 // 三个齿轮的配置
 const GEAR_CFG = {
@@ -314,7 +326,24 @@ function review(f){
 function nowStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
 
 // 设置
-function showSettings(){syncExport();document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.getElementById('ps').classList.add('active')}
+function showSettings(){syncExport();
+  const url=localStorage.getItem('gear_api_url')||'';
+  document.getElementById('serverUrl').value=url;
+  checkServer();
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.getElementById('ps').classList.add('active')}
+function saveServerUrl(){
+  const url=document.getElementById('serverUrl').value.trim();
+  if(url){localStorage.setItem('gear_api_url',url);toast('已保存，刷新页面生效','ok');location.reload();}
+  else{localStorage.removeItem('gear_api_url');toast('已清除，使用当前页面地址','ok');location.reload();}
+}
+function checkServer(){
+  const el=document.getElementById('serverStatus');
+  const url=document.getElementById('serverUrl').value.trim()||window.location.origin;
+  el.textContent='检查中...';el.style.color='#888';
+  fetch(url+'/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({gear:1,text:'test'}),signal:AbortSignal.timeout(3000)})
+  .then(r=>{if(r.ok){el.textContent='✅ 服务器已连接';el.style.color='#51cf66';}else{el.textContent='⚠️ 服务器返回错误: '+r.status;el.style.color='#ff6b6b';}})
+  .catch(()=>{el.textContent='⚠️ 无法连接 — 电脑上运行 gear serve';el.style.color='#ff6b6b';});
+}
 function syncExport(){document.getElementById('exportData').value=JSON.stringify(getE(),null,2)}
 function copyExport(){const el=document.getElementById('exportData');el.select();document.execCommand('copy');toast('已复制')}
 function importData(){try{const p=JSON.parse(document.getElementById('importData').value.trim());if(!Array.isArray(p))throw 1;setE(p);document.getElementById('importData').value='';updateStats();toast('已导入 '+p.length+' 条','ok')}catch{toast('JSON格式错误','warn')}}
