@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>三齿轮</title>
+<title>三齿轮训练</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0d0d0d;color:#d4d4d4;padding:0;min-height:100vh;display:flex;flex-direction:column}
@@ -15,46 +15,37 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .tabs{display:flex;gap:3px;margin:10px 12px 0;padding:0}
 .tab{flex:1;padding:10px 0;text-align:center;font-size:13px;border:1px solid #222;border-radius:8px 8px 0 0;background:#111;color:#555;cursor:pointer;transition:all .15s;user-select:none;border-bottom:none}
 .tab.active{background:#1a1a1a;color:#eee;border-color:#333}
-.tab.active.g1{color:#4a9eff;border-color:#4a9eff}
-.tab.active.g2{color:#ff6b6b;border-color:#ff6b6b}
-.tab.active.g3{color:#51cf66;border-color:#51cf66}
-.tab.active.gv{color:#cc9aff;border-color:#cc9aff}
+.tab.active.t1{color:#4a9eff;border-color:#4a9eff}
+.tab.active.t2{color:#ff6b6b;border-color:#ff6b6b}
+.tab.active.t3{color:#51cf66;border-color:#51cf66}
+.tab.active.tv{color:#cc9aff;border-color:#cc9aff}
 .panel{display:none;padding:12px;flex:1;overflow-y:auto}
 .panel.active{display:block}
 
-/* 引导步骤 */
-.step{display:none;margin-bottom:8px}
-.step.active{display:block}
-.step-label{font-size:11px;color:#555;margin-bottom:4px;font-weight:500}
-.step-box{background:#111;border:1px solid #222;border-radius:6px;padding:10px 12px}
-.step-box .q{font-size:13px;font-weight:500;margin-bottom:6px;line-height:1.5}
-.step-box .q .hl1{color:#4a9eff}
-.step-box .q .hl2{color:#ff6b6b}
-.step-box .q .hl3{color:#51cf66}
-.step-box .hint{font-size:11px;color:#555;margin-bottom:6px;line-height:1.5}
-.step-box textarea{width:100%;min-height:48px;padding:8px;background:#151515;border:1px solid #2a2a2a;border-radius:4px;color:#d4d4d4;font-size:13px;line-height:1.5;resize:vertical;font-family:inherit;outline:none}
-.step-box textarea:focus{border-color:#4a9eff}
-.step-box .btn-row{margin-top:6px}
+/* 输入区 */
+.input-area{background:#111;border:1px solid #222;border-radius:8px;padding:12px;margin-bottom:8px}
+.input-area label{font-size:11px;color:#666;display:block;margin-bottom:4px;font-weight:500}
+.input-area textarea{width:100%;min-height:56px;padding:8px;background:#151515;border:1px solid #2a2a2a;border-radius:4px;color:#d4d4d4;font-size:13px;line-height:1.5;resize:vertical;font-family:inherit;outline:none}
+.input-area textarea:focus{border-color:#555}
 
-.btn{padding:6px 14px;border:1px solid #222;border-radius:5px;background:#151515;color:#999;font-size:12px;cursor:pointer;transition:all .1s;user-select:none;display:inline-block}
+/* 分析结果 */
+.analysis-box{display:none;background:#0e1622;border:1px solid #1a2e4a;border-radius:8px;padding:12px;margin-bottom:8px;font-size:12px;line-height:1.7;white-space:pre-wrap;color:#c8d6e5}
+.analysis-box.show{display:block}
+
+/* 对比结果 */
+.compare-box{display:none;background:#1a1515;border:1px solid #3a2222;border-radius:8px;padding:12px;margin-bottom:8px;font-size:12px;line-height:1.7;white-space:pre-wrap;color:#e8d5d5}
+.compare-box.show{display:block}
+
+/* 按钮 */
+.btn-row{display:flex;gap:4px;flex-wrap:wrap;margin:4px 0}
+.btn{padding:7px 14px;border:1px solid #222;border-radius:5px;background:#151515;color:#999;font-size:12px;cursor:pointer;transition:all .1s;user-select:none}
 .btn:active{background:#222}
 .btn.primary{background:#4a9eff;border-color:#4a9eff;color:#fff;font-weight:500}
 .btn.primary:active{background:#3a8eef}
-.btn.g1{background:#1a1a3a;border-color:#4a9eff;color:#4a9eff}
-.btn.g2{background:#3a1a1a;border-color:#ff6b6b;color:#ff6b6b}
-.btn.g3{background:#1a3a1a;border-color:#51cf66;color:#51cf66}
-.btn.gv{background:#2a1a3a;border-color:#cc9aff;color:#cc9aff}
-
-/* 最近记录 */
-.recent{margin-top:12px;border-top:1px solid #222;padding-top:10px}
-.recent-title{font-size:11px;color:#444;margin-bottom:6px}
-.recent-entry{font-size:12px;color:#666;padding:4px 0;border-bottom:1px solid #1a1a1a;display:flex;gap:6px}
-.recent-entry .g-tag{color:#555;flex-shrink:0}
-.recent-entry .g-tag.gg1{color:#4a9eff}
-.recent-entry .g-tag.gg2{color:#ff6b6b}
-.recent-entry .g-tag.gg3{color:#51cf66}
-.recent-entry .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.recent-entry .time{color:#444;flex-shrink:0;font-size:10px}
+.btn.ai{background:#0e1a2e;border-color:#2a4a7a;color:#6aaeff}
+.btn.compare{background:#2a1515;border-color:#4a2a2a;color:#ff8a8a}
+.btn.done{background:#1a2e1a;border-color:#2a4a2a;color:#6aee6a}
+.btn.loading{opacity:.5;pointer-events:none}
 
 /* 复盘 */
 .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px}
@@ -64,165 +55,55 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .stat-card.g1 .num{color:#4a9eff}
 .stat-card.g2 .num{color:#ff6b6b}
 .stat-card.g3 .num{color:#51cf66}
-.review-filters{display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap}
 .timeline{max-height:55vh;overflow-y:auto}
 .entry{background:#111;border:1px solid #222;border-radius:6px;padding:8px 10px;margin-bottom:5px}
 .entry .meta{font-size:10px;color:#555;margin-bottom:2px;display:flex;justify-content:space-between}
-.entry .gear-tag{display:inline-block;font-size:10px;padding:1px 5px;border-radius:3px;margin-right:4px}
-.entry .gear-tag.g1{color:#4a9eff;border:1px solid #1a2e4a}
-.entry .gear-tag.g2{color:#ff6b6b;border:1px solid #4a1a1a}
-.entry .gear-tag.g3{color:#51cf66;border:1px solid #1a3a1a}
-.entry .text{font-size:12px;line-height:1.5;white-space:pre-wrap;word-break:break-word;color:#ccc}
+.entry .gear-tag{display:inline-block;font-size:10px;padding:1px 5px;border-radius:3px}
+.g1c{color:#4a9eff;border:1px solid #1a2e4a}
+.g2c{color:#ff6b6b;border:1px solid #4a1a1a}
+.g3c{color:#51cf66;border:1px solid #1a3a1a}
+.entry .text{font-size:11px;line-height:1.5;white-space:pre-wrap;word-break:break-word;color:#aaa}
 .empty{text-align:center;color:#444;padding:20px;font-size:12px}
+.review-filters{display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap}
+
+/* 提示条 */
+.tip-bar{display:none;background:#111;border:1px solid #222;border-radius:6px;padding:8px 10px;margin-bottom:8px;font-size:11px;color:#888;line-height:1.6}
+.tip-bar.show{display:block}
 
 /* 设置 */
 .setting-group{margin-bottom:10px}
 .setting-group label{font-size:11px;color:#666;margin-bottom:4px;display:block}
-.setting-group textarea{width:100%;min-height:50px;padding:8px;background:#111;border:1px solid #222;border-radius:4px;color:#d4d4d4;font-size:12px;resize:vertical;font-family:monospace;outline:none}
-.setting-group textarea:focus{border-color:#4a9eff}
-
-/* Toast */
+.setting-group textarea{width:100%;min-height:50px;padding:8px;background:#111;border:1px solid #222;border-radius:4px;color:#d4d4d4;font-size:12px;font-family:monospace;outline:none}
 .toast-container{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);z-index:9999;pointer-events:none}
-.toast{background:#4a9eff;color:#fff;padding:8px 18px;border-radius:8px;font-size:14px;opacity:0;transition:opacity .2s;white-space:nowrap;max-width:85vw;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.4);margin-bottom:6px}
+.toast{background:#4a9eff;color:#fff;padding:8px 18px;border-radius:8px;font-size:14px;opacity:0;transition:opacity .2s;max-width:85vw;text-align:center;margin-bottom:6px}
 .toast.show{opacity:1}
 .toast.warn{background:#ff6b6b}
 .toast.ok{background:#51cf66}
 </style>
 </head>
 <body>
-<div class="header">
-  <div><h1>⚙ 三齿轮</h1><div class="sub" id="counter">0 条</div></div>
-  <div style="display:flex;gap:4px">
-    <button class="btn" onclick="showSettings()" style="font-size:16px;padding:4px 10px">⚙</button>
-  </div>
-</div>
+<div class="header"><div><h1>⚙ 三齿轮训练</h1><div class="sub" id="counter">0 条</div></div><div><button class="btn" onclick="showSettings()" style="font-size:16px;padding:4px 10px">⚙</button></div></div>
 <div class="tabs">
-  <div class="tab active g1" data-tab="1">① 拆</div>
-  <div class="tab g2" data-tab="2">② 挖</div>
-  <div class="tab g3" data-tab="3">③ 产</div>
-  <div class="tab gv" data-tab="v">📊 复盘</div>
+  <div class="tab active t1" data-tab="1">① 拆</div>
+  <div class="tab t2" data-tab="2">② 挖</div>
+  <div class="tab t3" data-tab="3">③ 产</div>
+  <div class="tab tv" data-tab="v">📊 复盘</div>
 </div>
 
-<!-- 齿轮1 -->
-<div class="panel" id="p1">
-  <div id="g1-step1" class="step active">
-    <div class="step-label">步骤 1/2</div>
-    <div class="step-box">
-      <div class="q"><span class="hl1">你看到了什么现象？</span></div>
-      <div class="hint">一个案例、一个观点、一个让你困惑的事 —— 写下来，不用分析，描述就行</div>
-      <textarea id="g1-s1" placeholder="例：最近抖音上突然冒出一堆AI讲书号…"></textarea>
-      <div class="btn-row"><button class="btn g1" onclick="g1Next(2)">继续 → 拆结构</button></div>
-    </div>
-  </div>
-  <div id="g1-step2" class="step">
-    <div class="step-label">步骤 2/2</div>
-    <div class="step-box">
-      <div class="q"><span class="hl1">它的底层结构是什么？</span></div>
-      <div class="hint">画2×2矩阵：横轴和纵轴分别是什么？<br>或者剥三层：第一层看起来是什么？第二层的规则是什么？第三层的根因是什么？<br>试试反事实推演：去掉一个关键变量，这个结构还站得住吗？</div>
-      <textarea id="g1-s2" placeholder="2×2矩阵或三层分析…"></textarea>
-      <div class="btn-row" style="display:flex;gap:4px">
-        <button class="btn" onclick="g1Next(1)">← 改现象</button>
-        <button class="btn primary" onclick="saveGear(1)">✓ 保存</button>
-      </div>
-    </div>
-  </div>
-  <div class="recent" id="recent-1"></div>
-</div>
-
-<!-- 齿轮2 -->
-<div class="panel" id="p2">
-  <div id="g2-step1" class="step active">
-    <div class="step-label">步骤 1/3</div>
-    <div class="step-box">
-      <div class="q"><span class="hl2">你观察到了什么人的行为？</span></div>
-      <div class="hint">客户说了什么、做了什么、没做什么 —— 记录具体行为，不要评价</div>
-      <textarea id="g2-s1" placeholder="例：客户说想要数据分析，但一直没付费…"></textarea>
-      <div class="btn-row"><button class="btn g2" onclick="g2Next(2)">继续 → 挖驱动力</button></div>
-    </div>
-  </div>
-  <div id="g2-step2" class="step">
-    <div class="step-label">步骤 2/3</div>
-    <div class="step-box">
-      <div class="q"><span class="hl2">他的驱动力是什么？</span></div>
-      <div class="hint">怕什么？想要什么？懒得动什么？<br>嘴上说的和实际要的一样吗？<br>定位到疼痛vs焦虑象限：可量化+现在发生=最值钱的痛点</div>
-      <textarea id="g2-s2" placeholder="恐惧/欲望/惯性？哪个是主要的？"></textarea>
-      <div class="btn-row">
-        <button class="btn" onclick="g2Next(1)">← 改观察</button>
-        <button class="btn g2" onclick="g2Next(3)">继续 → 利益地图</button>
-      </div>
-    </div>
-  </div>
-  <div id="g2-step3" class="step">
-    <div class="step-label">步骤 3/3</div>
-    <div class="step-box">
-      <div class="q"><span class="hl2">利益地图：他真正在意的利益是什么？</span></div>
-      <div class="hint">显性利益（他嘴上说的）vs 隐性利益（他实际在意的）<br>校验问题：他为什么没做我建议的事？答案不能是"懒"或"不懂"</div>
-      <textarea id="g2-s3" placeholder="显性：… 隐性：…"></textarea>
-      <div class="btn-row" style="display:flex;gap:4px">
-        <button class="btn" onclick="g2Next(2)">← 改驱动力</button>
-        <button class="btn primary" onclick="saveGear(2)">✓ 保存</button>
-      </div>
-    </div>
-  </div>
-  <div class="recent" id="recent-2"></div>
-</div>
-
-<!-- 齿轮3 -->
-<div class="panel" id="p3">
-  <div id="g3-step1" class="step active">
-    <div class="step-label">步骤 1/3</div>
-    <div class="step-box">
-      <div class="q"><span class="hl3">你的洞察/判断是什么？</span></div>
-      <div class="hint">基于最近的齿轮1（拆结构）或齿轮2（挖人性），你得到了什么结论？</div>
-      <textarea id="g3-s1" placeholder="例：拆了AI讲书号的结构，发现核心驱动力不是知识焦虑，是…"></textarea>
-      <div class="btn-row"><button class="btn g3" onclick="g3Next(2)">继续 → 选形态</button></div>
-    </div>
-  </div>
-  <div id="g3-step2" class="step">
-    <div class="step-label">步骤 2/3</div>
-    <div class="step-box">
-      <div class="q"><span class="hl3">选一个产出形态</span></div>
-      <div class="hint">
-        <b>🔹 一个框架</b> — 画成2×2/三层/流程图<br>
-        <b>🔹 一个行动</b> — "接下来我要做X"<br>
-        <b>🔹 决策日志</b> — 我预计发生什么？什么信号验证/证伪？<br>
-        <b>🔹 一个产品</b> — 这个洞察能变成什么可用的东西？
-      </div>
-      <textarea id="g3-s2" placeholder="选一个形态，开始写…"></textarea>
-      <div class="btn-row">
-        <button class="btn" onclick="g3Next(1)">← 改洞察</button>
-        <button class="btn g3" onclick="g3Next(3)">继续 → 反馈闭环</button>
-      </div>
-    </div>
-  </div>
-  <div id="g3-step3" class="step">
-    <div class="step-label">步骤 3/3</div>
-    <div class="step-box">
-      <div class="q"><span class="hl3">反馈闭环：接下来做什么？</span></div>
-      <div class="hint">这个产出需要验证吗？需要跟齿轮1联动吗？<br>写下：一周后回来检查什么？</div>
-      <textarea id="g3-s3" placeholder="一周后检查：…"></textarea>
-      <div class="btn-row" style="display:flex;gap:4px">
-        <button class="btn" onclick="g3Next(2)">← 改形态</button>
-        <button class="btn primary" onclick="saveGear(3)">✓ 保存</button>
-      </div>
-    </div>
-  </div>
-  <div class="recent" id="recent-3"></div>
-</div>
+<!-- 三个齿轮用同一套模板，JS动态渲染 -->
+<div class="panel" id="p1"></div>
+<div class="panel" id="p2"></div>
+<div class="panel" id="p3"></div>
 
 <!-- 复盘 -->
 <div class="panel" id="pv">
-  <div class="stats">
-    <div class="stat-card g1"><div class="num" id="s1">0</div><div class="label">① 拆结构</div></div>
-    <div class="stat-card g2"><div class="num" id="s2">0</div><div class="label">② 挖人性</div></div>
-    <div class="stat-card g3"><div class="num" id="s3">0</div><div class="label">③ 压产出</div></div>
-  </div>
-  <div id="review-tip" style="background:#111;border:1px solid #222;border-radius:6px;padding:8px 10px;margin-bottom:8px;font-size:12px;color:#888;display:none"></div>
+  <div class="stats"><div class="stat-card g1"><div class="num" id="s1">0</div><div class="label">① 拆</div></div><div class="stat-card g2"><div class="num" id="s2">0</div><div class="label">② 挖</div></div><div class="stat-card g3"><div class="num" id="s3">0</div><div class="label">③ 产</div></div></div>
+  <div class="tip-bar" id="tipBar"></div>
   <div class="review-filters">
     <button class="btn" onclick="review('all')">全部</button>
-    <button class="btn g1" onclick="review(1)">① 拆</button>
-    <button class="btn g2" onclick="review(2)">② 挖</button>
-    <button class="btn g3" onclick="review(3)">③ 产</button>
+    <button class="btn g1c" onclick="review(1)">① 拆</button>
+    <button class="btn g2c" onclick="review(2)">② 挖</button>
+    <button class="btn g3c" onclick="review(3)">③ 产</button>
     <button class="btn" onclick="review('today')">今天</button>
     <button class="btn" onclick="review('week')">本周</button>
   </div>
@@ -231,19 +112,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 
 <!-- 设置 -->
 <div class="panel" id="ps">
-  <div class="setting-group"><label>导出（复制到电脑 data.json）</label><textarea id="exportData" readonly onclick="this.select();document.execCommand('copy')"></textarea><div class="btn-row" style="margin-top:4px"><button class="btn" onclick="copyExport()">📋 复制</button></div></div>
-  <div class="setting-group"><label>导入（粘贴 data.json 内容）</label><textarea id="importData" placeholder="粘贴 JSON..."></textarea><div class="btn-row" style="margin-top:4px"><button class="btn primary" onclick="importData()">导入</button></div></div>
+  <div class="setting-group"><label>导出</label><textarea id="exportData" readonly></textarea><div class="btn-row"><button class="btn" onclick="copyExport()">📋 复制</button></div></div>
+  <div class="setting-group"><label>导入</label><textarea id="importData" placeholder="粘贴 JSON..."></textarea><div class="btn-row"><button class="btn primary" onclick="importData()">导入</button></div></div>
 </div>
 
 <div class="toast-container" id="toastBox"></div>
 
 <script>
-const KEY = 'gear_entries';
-const NAMES = {1:'① 拆结构',2:'② 挖人性',3:'③ 压产出'};
+const KEY='gear_entries';const NAMES={1:'① 拆结构',2:'② 挖人性',3:'③ 压产出'};
+const API_BASE = window.location.origin;
+
+// 三个齿轮的配置
+const GEAR_CFG = {
+  1:{label:'① 拆结构',inputTitle:'你看到了什么现象？',inputHint:'一个案例、一个观点、一件让你困惑的事',aiBtn:'🤖 AI帮我拆','exprTitle':'我的分析：吸收后用自己的话表达','exprHint':'看完AI分析后，你自己来写——用2×2、三层或反事实推演','doneBtn':'✓ 保存并对比'},
+  2:{label:'② 挖人性',inputTitle:'你观察到了什么行为？',inputHint:'客户/用户/身边的人说了什么、做了什么',aiBtn:'🤖 AI帮我挖','exprTitle':'我的洞察：吸收后写你的判断','exprHint':'他的驱动力是什么？在哪个象限？利益地图是什么？','doneBtn':'✓ 保存并对比'},
+  3:{label:'③ 压产出',inputTitle:'你的洞察/判断是什么？',inputHint:'基于最近的拆解或挖人，你得到了什么结论',aiBtn:'🤖 AI帮产出','exprTitle':'我的产出：写你的产出方案','exprHint':'框架/行动/决策日志/产品化 ——选一个写','doneBtn':'✓ 保存并对比'},
+};
+
 function getE(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch{return[]}}
 function setE(e){localStorage.setItem(KEY,JSON.stringify(e))}
-
-function nowStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
 
 function toast(msg,type){
   const box=document.getElementById('toastBox');
@@ -253,137 +140,188 @@ function toast(msg,type){
   setTimeout(()=>{el.classList.remove('show');setTimeout(()=>el.remove(),200)},1400);
 }
 
-// Tab
+function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML}
+
+// 渲染齿轮面板
+function renderGearPanel(g){
+  const cfg=GEAR_CFG[g];
+  const state=JSON.parse(sessionStorage.getItem(`g${g}_state`)||'{}');
+  document.getElementById('p'+g).innerHTML=
+    '<div class="input-area"><label>【第一步】'+cfg.inputTitle+'</label><textarea id="g'+g+'_in" placeholder="'+cfg.inputHint+'">'+esc(state.input||'')+'</textarea>'
+    +'<div class="btn-row"><button class="btn ai" id="g'+g+'_aiBtn" onclick="aiAnalyze('+g+')">'+cfg.aiBtn+'</button></div></div>'
+    +'<div class="analysis-box'+(state.analysis?' show':'')+'" id="g'+g+'_ai">'+esc(state.analysis||'')+'</div>'
+    +'<div class="input-area" id="g'+g+'_exprArea"'+(state.analysis?'':' style="opacity:.4;pointer-events:none"')+'><label>【第二步】'+cfg.exprTitle+'</label><textarea id="g'+g+'_expr" placeholder="'+cfg.exprHint+'">'+esc(state.expr||'')+'</textarea>'
+    +'<div class="btn-row"><button class="btn compare" id="g'+g+'_cmpBtn" onclick="aiCompare('+g+')">📊 对比差异</button>'
+    +'<button class="btn done" id="g'+g+'_saveBtn" onclick="saveEntry('+g+')">'+cfg.doneBtn+'</button></div></div>'
+    +'<div class="compare-box'+(state.compare?' show':'')+'" id="g'+g+'_cmp">'+esc(state.compare||'')+'</div>'
+    +'<div id="g'+g+'_recent"></div>';
+}
+
+// 标签切换
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
-  t.classList.add('active');
   const tab=t.dataset.tab;
-  if(tab==='1')document.getElementById('p1').classList.add('active');
-  else if(tab==='2')document.getElementById('p2').classList.add('active');
-  else if(tab==='3')document.getElementById('p3').classList.add('active');
+  t.classList.add('active',{1:'t1',2:'t2',3:'t3',v:'tv',s:'tv'}[tab]);
+  if(tab==='1'||tab==='2'||tab==='3'){document.getElementById('p'+tab).classList.add('active');renderGearPanel(parseInt(tab));renderRecent(parseInt(tab));}
   else if(tab==='v'){document.getElementById('pv').classList.add('active');review('all');}
   else if(tab==='s'){document.getElementById('ps').classList.add('active');syncExport();}
-  t.classList.add('active',{1:'g1',2:'g2',3:'g3',v:'gv',s:'gv'}[tab]);
 }));
 
-// Gear 1 steps
-function g1Next(s){
-  document.querySelectorAll('#p1 .step').forEach(x=>x.classList.remove('active'));
-  document.getElementById('g1-step'+s).classList.add('active');
-}
-// Gear 2 steps
-function g2Next(s){
-  document.querySelectorAll('#p2 .step').forEach(x=>x.classList.remove('active'));
-  document.getElementById('g2-step'+s).classList.add('active');
-}
-// Gear 3 steps
-function g3Next(s){
-  document.querySelectorAll('#p3 .step').forEach(x=>x.classList.remove('active'));
-  document.getElementById('g3-step'+s).classList.add('active');
-}
+// AI分析
+function aiAnalyze(g){
+  const input=document.getElementById('g'+g+'_in');
+  const text=input.value.trim();
+  if(!text){toast('先写现象','warn');return;}
+  const btn=document.getElementById('g'+g+'_aiBtn');
+  btn.textContent='⏳ 分析中...';btn.classList.add('loading');
+  const box=document.getElementById('g'+g+'_ai');
 
-// Save
-function saveGear(g){
-  try{
-    const entries=getE();
-    let combined,gname;
-    const now=nowStr();
-    if(g===1){
-      const s1=document.getElementById('g1-s1').value.trim();
-      const s2=document.getElementById('g1-s2').value.trim();
-      if(!s1||!s2){toast('现象和结构都要填','warn');return}
-      combined='【现象】'+s1+'\n【结构】'+s2;
-      gname='拆结构';
-    }else if(g===2){
-      const s1=document.getElementById('g2-s1').value.trim();
-      const s2=document.getElementById('g2-s2').value.trim();
-      const s3=document.getElementById('g2-s3').value.trim();
-      if(!s1){toast('至少填行为观察','warn');return}
-      combined='【行为】'+s1+(s2?'\n【驱动力】'+s2:'')+(s3?'\n【利益地图】'+s3:'');
-      gname='挖人性';
-    }else if(g===3){
-      const s1=document.getElementById('g3-s1').value.trim();
-      const s2=document.getElementById('g3-s2').value.trim();
-      const s3=document.getElementById('g3-s3').value.trim();
-      if(!s1){toast('至少填洞察','warn');return}
-      combined='【洞察】'+s1+(s2?'\n【产出】'+s2:'')+(s3?'\n【反馈】'+s3:'');
-      gname='压产出';
-    }
-    entries.unshift({gear:g,text:combined,time:now,ts:Date.now()});
-    setE(entries);
-    // Clear
-    [1,2,3].forEach(i=>{
-      const el=document.getElementById(`g${g}-s${i}`);
-      if(el)el.value='';
-    });
-    g1Next(1);g2Next(1);g3Next(1); // reset to step 1
-    updateAll();
-    toast('✓ '+gname+' 已保存','ok');
-    // 保存后给反馈
-    if(g===1)setTimeout(()=>toast('💡 试试反事实推演：去掉关键变量会怎样？'),1500);
-    if(g===2)setTimeout(()=>toast('💡 校验：他为什么没做你建议的事？（答案不能是"懒"）'),1500);
-    if(g===3)setTimeout(()=>toast('💡 这个产出能变成什么可用的产品？'),1500);
-  }catch(e){toast('保存失败: '+e.message,'warn')}
-}
-
-function delEntry(ts){
-  if(!confirm('删除这条记录？'))return;
-  let entries=getE().filter(e=>e.ts!==ts);
-  setE(entries);
-  updateAll();
-  review(document.querySelector('.review-filters .btn.g1,.review-filters .btn.gv')?.textContent==='① 拆'?'all':document.querySelector('.review-filters .btn.active')?.dataset?.filter||'all');
-  toast('已删除');
-}
-function updateAll(){
-  const entries=getE();
-  document.getElementById('counter').textContent=entries.length+' 条';
-  const c={1:0,2:0,3:0};
-  entries.forEach(e=>{c[e.gear]=(c[e.gear]||0)+1});
-  document.getElementById('s1').textContent=c[1];
-  document.getElementById('s2').textContent=c[2];
-  document.getElementById('s3').textContent=c[3];
-  // 复盘提示
-  const tip=document.getElementById('review-tip');
-  if(c[1]+c[2]+c[3]>0){
-    if(c[3]<c[1]/2&&c[1]>2)tip.innerHTML='⚠️ 拆得多产得少——记得逼自己压产出';
-    else if(c[1]+c[2]>0&&c[3]===0)tip.innerHTML='💤 有拆有挖，但一条产出都没有';
-    else if(c[1]>c[2]*2)tip.innerHTML='🔄 拆了很多但很少挖人——试着多观察人';
-    else if(c[3]>c[1]&&c[1]>0)tip.innerHTML='✅ 产得比拆多——你在行动，不是空想';
-    else tip.innerHTML='';
-    tip.style.display=tip.innerHTML?'block':'none';
-  }
-  // Recent per gear
-  [1,2,3].forEach(g=>{
-    const el=document.getElementById('recent-'+g);
-    const gs=entries.filter(e=>e.gear===g).slice(0,3);
-    if(!gs.length){el.innerHTML='';return}
-    el.innerHTML='<div class="recent-title">最近记录</div>'+gs.map(e=>'<div class="recent-entry"><span class="g-tag gg'+g+'">'+'①②③'[g-1]+'</span><span class="t">'+esc(e.text.slice(0,60))+'</span><b onclick="delEntry('+e.ts+')" style="color:#444;cursor:pointer;margin-left:auto;flex-shrink:0;font-size:11px">✕</b></div>').join('');
+  fetch(API_BASE+'/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({gear:g,text})})
+  .then(r=>r.json()).then(d=>{
+    if(d.error){box.textContent='⚠️ '+d.error;box.classList.add('show');toast('分析失败','warn');return;}
+    const analysis=d.analysis||'（无结果）';
+    box.textContent=analysis;box.classList.add('show');
+    sessionStorage.setItem(`g${g}_state`,JSON.stringify({input:text,analysis,expr:'',compare:''}));
+    // 启用第二步
+    const area=document.getElementById('g'+g+'_exprArea');area.style.opacity='1';area.style.pointerEvents='auto';
+    toast('✅ 分析完成，现在用你自己的话表达','ok');
+  }).catch(e=>{
+    // 可能服务器没启动，降级到本地提示
+    if(!navigator.onLine||e.message==='Failed to fetch'){
+      box.textContent='⚠️ 未连接到 AI 服务器\n电脑上运行 gear serve 启动服务';box.classList.add('show');
+    }else{box.textContent='⚠️ 请求失败: '+e.message;box.classList.add('show');}
+    toast('连接失败','warn');
+  }).finally(()=>{
+    btn.textContent=GEAR_CFG[g].aiBtn;btn.classList.remove('loading');
   });
 }
 
-function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML}
+// 对比
+function aiCompare(g){
+  const state=JSON.parse(sessionStorage.getItem(`g${g}_state`)||'{}');
+  const aiText=document.getElementById('g'+g+'_ai').textContent;
+  const userText=document.getElementById('g'+g+'_expr').value.trim();
+  if(!userText){toast('先写你的表达','warn');return;}
+  if(!aiText||aiText.startsWith('⚠️')){toast('还没有AI分析结果','warn');return;}
+  const btn=document.getElementById('g'+g+'_cmpBtn');
+  btn.textContent='⏳ 对比中...';btn.classList.add('loading');
+  const box=document.getElementById('g'+g+'_cmp');
 
+  fetch(API_BASE+'/api/compare',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_text:userText,ai_text:aiText})})
+  .then(r=>r.json()).then(d=>{
+    if(d.error){box.textContent='⚠️ '+d.error;box.classList.add('show');toast('对比失败','warn');return;}
+    const cmp=d.comparison||'（无结果）';
+    box.textContent=cmp;box.classList.add('show');
+    state.expr=userText;state.compare=cmp;
+    sessionStorage.setItem(`g${g}_state`,JSON.stringify(state));
+    toast('📊 差异已显示','ok');
+  }).catch(e=>{
+    if(!navigator.onLine||e.message==='Failed to fetch'){
+      box.textContent='⚠️ 未连接到 AI 服务器\n电脑上运行 gear serve 启动服务';box.classList.add('show');
+    }else{box.textContent='⚠️ 请求失败: '+e.message;box.classList.add('show');}
+  }).finally(()=>{
+    btn.textContent='📊 对比差异';btn.classList.remove('loading');
+  });
+}
+
+// 保存
+function saveEntry(g){
+  const input=document.getElementById('g'+g+'_in').value.trim();
+  const expr=document.getElementById('g'+g+'_expr').value.trim();
+  const aiText=document.getElementById('g'+g+'_ai').textContent;
+  const cmpText=document.getElementById('g'+g+'_cmp').textContent;
+  if(!expr){toast('至少写你的表达','warn');return;}
+  const entries=getE();
+  const now=new Date();
+  const ts=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0')+' '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  entries.unshift({gear:g,input,ai:aiText.startsWith('⚠️')?'':aiText,expr,compare:cmpText.startsWith('⚠️')?'':cmpText,time:ts,ts:Date.now()});
+  setE(entries);
+  // 重置
+  document.getElementById('g'+g+'_in').value='';
+  document.getElementById('g'+g+'_expr').value='';
+  const aiBox=document.getElementById('g'+g+'_ai');aiBox.textContent='';aiBox.classList.remove('show');
+  const cmpBox=document.getElementById('g'+g+'_cmp');cmpBox.textContent='';cmpBox.classList.remove('show');
+  document.getElementById('g'+g+'_exprArea').style.opacity='.4';document.getElementById('g'+g+'_exprArea').style.pointerEvents='none';
+  sessionStorage.removeItem(`g${g}_state`);
+  updateStats();
+  renderRecent(g);
+  toast('✓ 已保存 — 去复盘看进步轨迹','ok');
+}
+
+// 最近记录
+function renderRecent(g){
+  const el=document.getElementById('g'+g+'_recent');
+  const entries=getE().filter(e=>e.gear===g).slice(0,5);
+  if(!entries.length){el.innerHTML='';return;}
+  el.innerHTML='<div style="border-top:1px solid #222;padding-top:8px;margin-top:8px"><div style="font-size:10px;color:#444;margin-bottom:4px">历史记录</div>'
+  +entries.map(e=>{
+    const hasCmp=e.compare?'📊':'';
+    return '<div class="entry" onclick="showDetail('+e.ts+')"><div class="meta"><span class="gear-tag g'+g+'c">'+hasCmp+NAMES[g]+'</span><span style="color:#444;font-size:10px">'+e.time+' <b onclick="event.stopPropagation();delEntry('+e.ts+')" style="color:#444;cursor:pointer;margin-left:4px">✕</b></span></div><div class="text">'+esc((e.expr||'').slice(0,80))+'</div></div>';
+  }).join('')+'</div>';
+}
+
+// 查看详情
+function showDetail(ts){
+  const entry=getE().find(e=>e.ts===ts);
+  if(!entry)return;
+  const detail=[];
+  if(entry.input)detail.push('【输入】\n'+entry.input);
+  if(entry.ai)detail.push('【AI分析】\n'+entry.ai);
+  if(entry.expr)detail.push('【我的表达】\n'+entry.expr);
+  if(entry.compare)detail.push('【对比建议】\n'+entry.compare);
+  alert(detail.join('\n\n'));
+}
+
+// 删除
+function delEntry(ts){
+  if(!confirm('删除这条？'))return;
+  setE(getE().filter(e=>e.ts!==ts));
+  updateStats();
+  review(document.querySelector('.review-filters .btn.active')?.textContent||'all');
+  toast('已删除');
+}
+
+// 统计
+function updateStats(){
+  const entries=getE();
+  document.getElementById('counter').textContent=entries.length+' 条';
+  const c={1:0,2:0,3:0};entries.forEach(e=>{c[e.gear]=(c[e.gear]||0)+1});
+  document.getElementById('s1').textContent=c[1];document.getElementById('s2').textContent=c[2];document.getElementById('s3').textContent=c[3];
+  const tip=document.getElementById('tipBar');
+  let msg='';
+  if(c[1]+c[2]+c[3]>0){
+    const withCmp=entries.filter(e=>e.compare).length;
+    if(c[3]<c[1]/2&&c[1]>2)msg='⚠️ 拆得多产得少';
+    else if(withCmp>0)msg='✅ 有对比的记录: '+withCmp+'条 — 你在进步';
+    else msg='💡 每次保存后点"对比差异"能看到进步';
+  }
+  if(msg){tip.textContent=msg;tip.classList.add('show');}else tip.classList.remove('show');
+}
+
+// 复盘
 function review(f){
   let entries=getE();
-  const now=new Date();
-  const dStr=now.toLocaleDateString('zh-CN');
-  const wk=now.getTime()-7*24*60*60*1000;
-  if(f==='today')entries=entries.filter(e=>e.time.startsWith(nowStr().slice(0,10)));
+  const now=new Date();const today=nowStr().slice(0,10);const wk=now.getTime()-7*24*60*60*1000;
+  if(f==='today')entries=entries.filter(e=>e.time.startsWith(today));
   else if(f==='week')entries=entries.filter(e=>e.ts>wk);
   else if([1,2,3].includes(f))entries=entries.filter(e=>e.gear===f);
   const el=document.getElementById('timeline');
-  if(!entries.length){el.innerHTML='<div class="empty">无记录</div>';return}
-  el.innerHTML=entries.map(e=>'<div class="entry"><div class="meta"><span><span class="gear-tag g'+e.gear+'">'+(NAMES[e.gear]||'?')+'</span></span><span>'+e.time+' <b class="del-btn" onclick="delEntry('+e.ts+')" style="color:#555;cursor:pointer;margin-left:6px">✕</b></span></div><div class="text">'+esc(e.text)+'</div></div>').join('');
+  if(!entries.length){el.innerHTML='<div class="empty">无记录</div>';return;}
+  el.innerHTML=entries.map(e=>'<div class="entry" onclick="showDetail('+e.ts+')"><div class="meta"><span><span class="gear-tag g'+(e.gear||1)+'c">'+(NAMES[e.gear]||'?')+'</span>'+(e.compare?' <span style="color:#cc9aff;font-size:10px">📊已对比</span>':'')+'</span><span>'+e.time+' <b onclick="event.stopPropagation();delEntry('+e.ts+')" style="color:#444;cursor:pointer;margin-left:4px">✕</b></span></div><div class="text">'+esc((e.expr||e.input||'').slice(0,100))+'</div></div>').join('');
 }
 
+function nowStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
+
+// 设置
 function showSettings(){syncExport();document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.getElementById('ps').classList.add('active')}
 function syncExport(){document.getElementById('exportData').value=JSON.stringify(getE(),null,2)}
 function copyExport(){const el=document.getElementById('exportData');el.select();document.execCommand('copy');toast('已复制')}
-function importData(){try{const p=JSON.parse(document.getElementById('importData').value.trim());if(!Array.isArray(p))throw 1;setE(p);document.getElementById('importData').value='';updateAll();toast('已导入 '+p.length+' 条','ok')}catch{toast('JSON格式错误','warn')}}
+function importData(){try{const p=JSON.parse(document.getElementById('importData').value.trim());if(!Array.isArray(p))throw 1;setE(p);document.getElementById('importData').value='';updateStats();toast('已导入 '+p.length+' 条','ok')}catch{toast('JSON格式错误','warn')}}
 
-// Init
-updateAll();
+// 初始化
+updateStats();
+for(let g=1;g<=3;g++)renderGearPanel(g);
 </script>
 </body>
 </html>

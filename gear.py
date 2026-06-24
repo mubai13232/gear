@@ -150,11 +150,9 @@ def main():
         cmd_sync()
     elif cmd == "serve":
         import subprocess, socket
-        hostname = socket.gethostbyname(socket.gethostname())
-        print(f"📡 手机在同一 WiFi 下访问：http://{hostname}:8899/gear.html")
-        print(f"   Ctrl+C 停止服务")
+        print("启动齿轮服务器...")
         os.chdir(os.path.dirname(os.path.abspath(__file__)))
-        subprocess.run([sys.executable, "-m", "http.server", "8899"])
+        subprocess.run([sys.executable, "gear_server.py"])
     elif cmd in ("1", "2", "3"):
         if len(args) < 2:
             print(f"齿轮{cmd}：{GEAR_CHEATS[int(cmd)]}")
