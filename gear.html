@@ -232,7 +232,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 <!-- 设置 -->
 <div class="panel" id="ps">
   <div class="setting-group"><label>导出（复制到电脑 data.json）</label><textarea id="exportData" readonly onclick="this.select();document.execCommand('copy')"></textarea><div class="btn-row" style="margin-top:4px"><button class="btn" onclick="copyExport()">📋 复制</button></div></div>
-  <div class="setting-group"><label>导入（粘贴 data.json 内容）</label><textarea id="importData" placeholder="粘贴 JSON..."></textarea><div class="btn-row" style="margin-top:4px"><button class="btn primary" onclick="importData()">导入</button><button class="btn" onclick="clearAll()" style="color:#ff6b6b">清空</button></div></div>
+  <div class="setting-group"><label>导入（粘贴 data.json 内容）</label><textarea id="importData" placeholder="粘贴 JSON..."></textarea><div class="btn-row" style="margin-top:4px"><button class="btn primary" onclick="importData()">导入</button></div></div>
 </div>
 
 <div class="toast-container" id="toastBox"></div>
@@ -327,6 +327,14 @@ function saveGear(g){
   }catch(e){toast('保存失败: '+e.message,'warn')}
 }
 
+function delEntry(ts){
+  if(!confirm('删除这条记录？'))return;
+  let entries=getE().filter(e=>e.ts!==ts);
+  setE(entries);
+  updateAll();
+  review(document.querySelector('.review-filters .btn.g1,.review-filters .btn.gv')?.textContent==='① 拆'?'all':document.querySelector('.review-filters .btn.active')?.dataset?.filter||'all');
+  toast('已删除');
+}
 function updateAll(){
   const entries=getE();
   document.getElementById('counter').textContent=entries.length+' 条';
@@ -350,7 +358,7 @@ function updateAll(){
     const el=document.getElementById('recent-'+g);
     const gs=entries.filter(e=>e.gear===g).slice(0,3);
     if(!gs.length){el.innerHTML='';return}
-    el.innerHTML='<div class="recent-title">最近记录</div>'+gs.map(e=>'<div class="recent-entry"><span class="g-tag gg'+g+'">'+'①②③'[g-1]+'</span><span class="t">'+esc(e.text.slice(0,60))+'</span><span class="time">'+e.time.slice(-5)+'</span></div>').join('');
+    el.innerHTML='<div class="recent-title">最近记录</div>'+gs.map(e=>'<div class="recent-entry"><span class="g-tag gg'+g+'">'+'①②③'[g-1]+'</span><span class="t">'+esc(e.text.slice(0,60))+'</span><b onclick="delEntry('+e.ts+')" style="color:#444;cursor:pointer;margin-left:auto;flex-shrink:0;font-size:11px">✕</b></div>').join('');
   });
 }
 
@@ -366,14 +374,13 @@ function review(f){
   else if([1,2,3].includes(f))entries=entries.filter(e=>e.gear===f);
   const el=document.getElementById('timeline');
   if(!entries.length){el.innerHTML='<div class="empty">无记录</div>';return}
-  el.innerHTML=entries.map(e=>'<div class="entry"><div class="meta"><span><span class="gear-tag g'+e.gear+'">'+(NAMES[e.gear]||'?')+'</span></span><span>'+e.time+'</span></div><div class="text">'+esc(e.text)+'</div></div>').join('');
+  el.innerHTML=entries.map(e=>'<div class="entry"><div class="meta"><span><span class="gear-tag g'+e.gear+'">'+(NAMES[e.gear]||'?')+'</span></span><span>'+e.time+' <b class="del-btn" onclick="delEntry('+e.ts+')" style="color:#555;cursor:pointer;margin-left:6px">✕</b></span></div><div class="text">'+esc(e.text)+'</div></div>').join('');
 }
 
 function showSettings(){syncExport();document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.getElementById('ps').classList.add('active')}
 function syncExport(){document.getElementById('exportData').value=JSON.stringify(getE(),null,2)}
 function copyExport(){const el=document.getElementById('exportData');el.select();document.execCommand('copy');toast('已复制')}
 function importData(){try{const p=JSON.parse(document.getElementById('importData').value.trim());if(!Array.isArray(p))throw 1;setE(p);document.getElementById('importData').value='';updateAll();toast('已导入 '+p.length+' 条','ok')}catch{toast('JSON格式错误','warn')}}
-function clearAll(){if(confirm('清空所有记录？')){setE([]);updateAll();toast('已清空','warn')}}
 
 // Init
 updateAll();
