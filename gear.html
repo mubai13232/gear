@@ -21,53 +21,82 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .tab.active.gv{color:#cc9aff;border-color:#cc9aff}
 .panel{display:none;padding:12px;flex:1;overflow-y:auto}
 .panel.active{display:block}
-.prompt{font-size:12px;color:#666;margin-bottom:10px;line-height:1.6;padding:8px 10px;background:#111;border-radius:6px;border-left:2px solid #333}
-.prompt .hl{color:#4a9eff}
-textarea{width:100%;min-height:120px;padding:10px;background:#111;border:1px solid #222;border-radius:6px;color:#d4d4d4;font-size:14px;line-height:1.6;resize:vertical;font-family:inherit;outline:none}
-textarea:focus{border-color:#4a9eff}
-.btn-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-.btn{padding:7px 16px;border:1px solid #222;border-radius:5px;background:#151515;color:#999;font-size:12px;cursor:pointer;transition:all .1s;user-select:none}
+
+/* 引导步骤 */
+.step{display:none;margin-bottom:8px}
+.step.active{display:block}
+.step-label{font-size:11px;color:#555;margin-bottom:4px;font-weight:500}
+.step-box{background:#111;border:1px solid #222;border-radius:6px;padding:10px 12px}
+.step-box .q{font-size:13px;font-weight:500;margin-bottom:6px;line-height:1.5}
+.step-box .q .hl1{color:#4a9eff}
+.step-box .q .hl2{color:#ff6b6b}
+.step-box .q .hl3{color:#51cf66}
+.step-box .hint{font-size:11px;color:#555;margin-bottom:6px;line-height:1.5}
+.step-box textarea{width:100%;min-height:48px;padding:8px;background:#151515;border:1px solid #2a2a2a;border-radius:4px;color:#d4d4d4;font-size:13px;line-height:1.5;resize:vertical;font-family:inherit;outline:none}
+.step-box textarea:focus{border-color:#4a9eff}
+.step-box .btn-row{margin-top:6px}
+
+.btn{padding:6px 14px;border:1px solid #222;border-radius:5px;background:#151515;color:#999;font-size:12px;cursor:pointer;transition:all .1s;user-select:none;display:inline-block}
 .btn:active{background:#222}
 .btn.primary{background:#4a9eff;border-color:#4a9eff;color:#fff;font-weight:500}
 .btn.primary:active{background:#3a8eef}
-.btn.danger{background:#2a1515;border-color:#442;color:#ff6b6b}
-.count-badge{display:inline-block;background:#1a1a2e;color:#4a9eff;font-size:11px;padding:1px 8px;border-radius:10px;margin-left:6px}
+.btn.g1{background:#1a1a3a;border-color:#4a9eff;color:#4a9eff}
+.btn.g2{background:#3a1a1a;border-color:#ff6b6b;color:#ff6b6b}
+.btn.g3{background:#1a3a1a;border-color:#51cf66;color:#51cf66}
+.btn.gv{background:#2a1a3a;border-color:#cc9aff;color:#cc9aff}
 
-/* 复盘区 */
-.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:12px}
+/* 最近记录 */
+.recent{margin-top:12px;border-top:1px solid #222;padding-top:10px}
+.recent-title{font-size:11px;color:#444;margin-bottom:6px}
+.recent-entry{font-size:12px;color:#666;padding:4px 0;border-bottom:1px solid #1a1a1a;display:flex;gap:6px}
+.recent-entry .g-tag{color:#555;flex-shrink:0}
+.recent-entry .g-tag.gg1{color:#4a9eff}
+.recent-entry .g-tag.gg2{color:#ff6b6b}
+.recent-entry .g-tag.gg3{color:#51cf66}
+.recent-entry .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.recent-entry .time{color:#444;flex-shrink:0;font-size:10px}
+
+/* 复盘 */
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px}
 .stat-card{padding:10px;border-radius:6px;text-align:center;background:#111;border:1px solid #222}
 .stat-card .num{font-size:22px;font-weight:600}
 .stat-card .label{font-size:10px;color:#666;margin-top:2px}
 .stat-card.g1 .num{color:#4a9eff}
 .stat-card.g2 .num{color:#ff6b6b}
 .stat-card.g3 .num{color:#51cf66}
-.timeline{max-height:50vh;overflow-y:auto}
-.entry{background:#111;border:1px solid #222;border-radius:6px;padding:10px 12px;margin-bottom:6px}
-.entry .meta{font-size:11px;color:#555;margin-bottom:3px;display:flex;justify-content:space-between}
-.entry .gear-tag{display:inline-block;font-size:10px;padding:1px 6px;border-radius:3px;margin-right:4px}
+.review-filters{display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap}
+.timeline{max-height:55vh;overflow-y:auto}
+.entry{background:#111;border:1px solid #222;border-radius:6px;padding:8px 10px;margin-bottom:5px}
+.entry .meta{font-size:10px;color:#555;margin-bottom:2px;display:flex;justify-content:space-between}
+.entry .gear-tag{display:inline-block;font-size:10px;padding:1px 5px;border-radius:3px;margin-right:4px}
 .entry .gear-tag.g1{color:#4a9eff;border:1px solid #1a2e4a}
 .entry .gear-tag.g2{color:#ff6b6b;border:1px solid #4a1a1a}
 .entry .gear-tag.g3{color:#51cf66;border:1px solid #1a3a1a}
-.entry .text{font-size:13px;line-height:1.5;white-space:pre-wrap;word-break:break-word}
-.empty{text-align:center;color:#444;padding:20px;font-size:13px}
+.entry .text{font-size:12px;line-height:1.5;white-space:pre-wrap;word-break:break-word;color:#ccc}
+.empty{text-align:center;color:#444;padding:20px;font-size:12px}
 
-/* 设置区 */
-.setting-row{margin-bottom:10px}
-.setting-row label{display:block;font-size:12px;color:#666;margin-bottom:4px}
-.setting-row textarea{min-height:60px;font-size:12px}
-.hidden{display:none}
+/* 设置 */
+.setting-group{margin-bottom:10px}
+.setting-group label{font-size:11px;color:#666;margin-bottom:4px;display:block}
+.setting-group textarea{width:100%;min-height:50px;padding:8px;background:#111;border:1px solid #222;border-radius:4px;color:#d4d4d4;font-size:12px;resize:vertical;font-family:monospace;outline:none}
+.setting-group textarea:focus{border-color:#4a9eff}
+
+/* Toast */
+.toast-container{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);z-index:9999;pointer-events:none}
+.toast{background:#4a9eff;color:#fff;padding:8px 18px;border-radius:8px;font-size:14px;opacity:0;transition:opacity .2s;white-space:nowrap;max-width:85vw;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.4);margin-bottom:6px}
+.toast.show{opacity:1}
+.toast.warn{background:#ff6b6b}
+.toast.ok{background:#51cf66}
 </style>
 </head>
 <body>
-
 <div class="header">
-  <div><h1>⚙ 三齿轮</h1><div class="sub" id="counter">0 条记录</div></div>
+  <div><h1>⚙ 三齿轮</h1><div class="sub" id="counter">0 条</div></div>
   <div style="display:flex;gap:4px">
     <button class="btn" onclick="showSettings()" style="font-size:16px;padding:4px 10px">⚙</button>
   </div>
 </div>
-
-<div class="tabs" id="tabBar">
+<div class="tabs">
   <div class="tab active g1" data-tab="1">① 拆</div>
   <div class="tab g2" data-tab="2">② 挖</div>
   <div class="tab g3" data-tab="3">③ 产</div>
@@ -75,272 +104,279 @@ textarea:focus{border-color:#4a9eff}
 </div>
 
 <!-- 齿轮1 -->
-<div class="panel" id="panel-1">
-  <div class="prompt">这个事的<b>真实结构</b>是什么？<br>2×2矩阵 / 剥三层 / 反事实推演</div>
-  <textarea id="input-1" placeholder="现象：..." oninput="autoResize(this)"></textarea>
-  <div class="btn-row">
-    <button class="btn primary" onclick="saveEntry(1)">保存</button>
-    <button class="btn" onclick="setPlaceholder(1)">💡 提示</button>
+<div class="panel" id="p1">
+  <div id="g1-step1" class="step active">
+    <div class="step-label">步骤 1/2</div>
+    <div class="step-box">
+      <div class="q"><span class="hl1">你看到了什么现象？</span></div>
+      <div class="hint">一个案例、一个观点、一个让你困惑的事 —— 写下来，不用分析，描述就行</div>
+      <textarea id="g1-s1" placeholder="例：最近抖音上突然冒出一堆AI讲书号…"></textarea>
+      <div class="btn-row"><button class="btn g1" onclick="g1Next(2)">继续 → 拆结构</button></div>
+    </div>
   </div>
-  <div style="margin-top:10px" id="recent-1"></div>
+  <div id="g1-step2" class="step">
+    <div class="step-label">步骤 2/2</div>
+    <div class="step-box">
+      <div class="q"><span class="hl1">它的底层结构是什么？</span></div>
+      <div class="hint">画2×2矩阵：横轴和纵轴分别是什么？<br>或者剥三层：第一层看起来是什么？第二层的规则是什么？第三层的根因是什么？<br>试试反事实推演：去掉一个关键变量，这个结构还站得住吗？</div>
+      <textarea id="g1-s2" placeholder="2×2矩阵或三层分析…"></textarea>
+      <div class="btn-row" style="display:flex;gap:4px">
+        <button class="btn" onclick="g1Next(1)">← 改现象</button>
+        <button class="btn primary" onclick="saveGear(1)">✓ 保存</button>
+      </div>
+    </div>
+  </div>
+  <div class="recent" id="recent-1"></div>
 </div>
 
 <!-- 齿轮2 -->
-<div class="panel" id="panel-2">
-  <div class="prompt">人在<b>怕什么</b>？想要什么？懒得动什么？<br>嘴上说的和实际要的一样吗？</div>
-  <textarea id="input-2" placeholder="观察：..." oninput="autoResize(this)"></textarea>
-  <div class="btn-row">
-    <button class="btn primary" onclick="saveEntry(2)">保存</button>
-    <button class="btn" onclick="setPlaceholder(2)">💡 提示</button>
+<div class="panel" id="p2">
+  <div id="g2-step1" class="step active">
+    <div class="step-label">步骤 1/3</div>
+    <div class="step-box">
+      <div class="q"><span class="hl2">你观察到了什么人的行为？</span></div>
+      <div class="hint">客户说了什么、做了什么、没做什么 —— 记录具体行为，不要评价</div>
+      <textarea id="g2-s1" placeholder="例：客户说想要数据分析，但一直没付费…"></textarea>
+      <div class="btn-row"><button class="btn g2" onclick="g2Next(2)">继续 → 挖驱动力</button></div>
+    </div>
   </div>
-  <div style="margin-top:10px" id="recent-2"></div>
+  <div id="g2-step2" class="step">
+    <div class="step-label">步骤 2/3</div>
+    <div class="step-box">
+      <div class="q"><span class="hl2">他的驱动力是什么？</span></div>
+      <div class="hint">怕什么？想要什么？懒得动什么？<br>嘴上说的和实际要的一样吗？<br>定位到疼痛vs焦虑象限：可量化+现在发生=最值钱的痛点</div>
+      <textarea id="g2-s2" placeholder="恐惧/欲望/惯性？哪个是主要的？"></textarea>
+      <div class="btn-row">
+        <button class="btn" onclick="g2Next(1)">← 改观察</button>
+        <button class="btn g2" onclick="g2Next(3)">继续 → 利益地图</button>
+      </div>
+    </div>
+  </div>
+  <div id="g2-step3" class="step">
+    <div class="step-label">步骤 3/3</div>
+    <div class="step-box">
+      <div class="q"><span class="hl2">利益地图：他真正在意的利益是什么？</span></div>
+      <div class="hint">显性利益（他嘴上说的）vs 隐性利益（他实际在意的）<br>校验问题：他为什么没做我建议的事？答案不能是"懒"或"不懂"</div>
+      <textarea id="g2-s3" placeholder="显性：… 隐性：…"></textarea>
+      <div class="btn-row" style="display:flex;gap:4px">
+        <button class="btn" onclick="g2Next(2)">← 改驱动力</button>
+        <button class="btn primary" onclick="saveGear(2)">✓ 保存</button>
+      </div>
+    </div>
+  </div>
+  <div class="recent" id="recent-2"></div>
 </div>
 
 <!-- 齿轮3 -->
-<div class="panel" id="panel-3">
-  <div class="prompt">这个洞察能变成<b>什么可用的东西</b>？<br>一个框架 / 三句话 / 一个行动 / 决策日志</div>
-  <textarea id="input-3" placeholder="产出：..." oninput="autoResize(this)"></textarea>
-  <div class="btn-row">
-    <button class="btn primary" onclick="saveEntry(3)">保存</button>
-    <button class="btn" onclick="setPlaceholder(3)">💡 提示</button>
+<div class="panel" id="p3">
+  <div id="g3-step1" class="step active">
+    <div class="step-label">步骤 1/3</div>
+    <div class="step-box">
+      <div class="q"><span class="hl3">你的洞察/判断是什么？</span></div>
+      <div class="hint">基于最近的齿轮1（拆结构）或齿轮2（挖人性），你得到了什么结论？</div>
+      <textarea id="g3-s1" placeholder="例：拆了AI讲书号的结构，发现核心驱动力不是知识焦虑，是…"></textarea>
+      <div class="btn-row"><button class="btn g3" onclick="g3Next(2)">继续 → 选形态</button></div>
+    </div>
   </div>
-  <div style="margin-top:10px" id="recent-3"></div>
+  <div id="g3-step2" class="step">
+    <div class="step-label">步骤 2/3</div>
+    <div class="step-box">
+      <div class="q"><span class="hl3">选一个产出形态</span></div>
+      <div class="hint">
+        <b>🔹 一个框架</b> — 画成2×2/三层/流程图<br>
+        <b>🔹 一个行动</b> — "接下来我要做X"<br>
+        <b>🔹 决策日志</b> — 我预计发生什么？什么信号验证/证伪？<br>
+        <b>🔹 一个产品</b> — 这个洞察能变成什么可用的东西？
+      </div>
+      <textarea id="g3-s2" placeholder="选一个形态，开始写…"></textarea>
+      <div class="btn-row">
+        <button class="btn" onclick="g3Next(1)">← 改洞察</button>
+        <button class="btn g3" onclick="g3Next(3)">继续 → 反馈闭环</button>
+      </div>
+    </div>
+  </div>
+  <div id="g3-step3" class="step">
+    <div class="step-label">步骤 3/3</div>
+    <div class="step-box">
+      <div class="q"><span class="hl3">反馈闭环：接下来做什么？</span></div>
+      <div class="hint">这个产出需要验证吗？需要跟齿轮1联动吗？<br>写下：一周后回来检查什么？</div>
+      <textarea id="g3-s3" placeholder="一周后检查：…"></textarea>
+      <div class="btn-row" style="display:flex;gap:4px">
+        <button class="btn" onclick="g3Next(2)">← 改形态</button>
+        <button class="btn primary" onclick="saveGear(3)">✓ 保存</button>
+      </div>
+    </div>
+  </div>
+  <div class="recent" id="recent-3"></div>
 </div>
 
 <!-- 复盘 -->
-<div class="panel" id="panel-v">
+<div class="panel" id="pv">
   <div class="stats">
     <div class="stat-card g1"><div class="num" id="s1">0</div><div class="label">① 拆结构</div></div>
     <div class="stat-card g2"><div class="num" id="s2">0</div><div class="label">② 挖人性</div></div>
     <div class="stat-card g3"><div class="num" id="s3">0</div><div class="label">③ 压产出</div></div>
   </div>
-  <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap">
-    <button class="btn" onclick="filterReview('all')">全部</button>
-    <button class="btn" style="border-color:#4a9eff;color:#4a9eff" onclick="filterReview(1)">① 拆</button>
-    <button class="btn" style="border-color:#ff6b6b;color:#ff6b6b" onclick="filterReview(2)">② 挖</button>
-    <button class="btn" style="border-color:#51cf66;color:#51cf66" onclick="filterReview(3)">③ 产</button>
-    <button class="btn" onclick="filterReview('today')">今天</button>
-    <button class="btn" onclick="filterReview('week')">本周</button>
+  <div id="review-tip" style="background:#111;border:1px solid #222;border-radius:6px;padding:8px 10px;margin-bottom:8px;font-size:12px;color:#888;display:none"></div>
+  <div class="review-filters">
+    <button class="btn" onclick="review('all')">全部</button>
+    <button class="btn g1" onclick="review(1)">① 拆</button>
+    <button class="btn g2" onclick="review(2)">② 挖</button>
+    <button class="btn g3" onclick="review(3)">③ 产</button>
+    <button class="btn" onclick="review('today')">今天</button>
+    <button class="btn" onclick="review('week')">本周</button>
   </div>
   <div class="timeline" id="timeline"></div>
 </div>
 
-<!-- 设置面板 -->
-<div class="panel" id="panel-settings">
-  <div class="setting-row">
-    <label>导出数据（复制到电脑/data.json）</label>
-    <textarea id="exportData" readonly onclick="this.select();document.execCommand('copy')"></textarea>
-    <div class="btn-row"><button class="btn" onclick="copyExport()">📋 复制</button></div>
-  </div>
-  <div class="setting-row">
-    <label>导入数据（粘贴电脑/data.json 的内容）</label>
-    <textarea id="importData" placeholder="粘贴 JSON..." style="min-height:60px"></textarea>
-    <div class="btn-row"><button class="btn primary" onclick="importFromData()">导入并覆盖</button><button class="btn danger" onclick="clearAll()">清空所有记录</button></div>
-  </div>
-  <div class="setting-row">
-    <label>说明</label>
-    <div style="font-size:12px;color:#555;line-height:1.6">
-      <b>跨设备同步：</b><br>
-      电脑 → 手机：电脑上运行 <code style="background:#1a1a1a;padding:1px 4px;border-radius:2px">gear export</code> 导出到 Obsidian，或复制 data.json 的内容<br>
-      手机 → 电脑：在"设置"里复制导出内容，电脑上粘贴到 gear-data/data.json<br><br>
-      也可以在电脑上运行 <code style="background:#1a1a1a;padding:1px 4px;border-radius:2px">gear serve</code> 启动局域网服务，手机直接访问。
-    </div>
-  </div>
+<!-- 设置 -->
+<div class="panel" id="ps">
+  <div class="setting-group"><label>导出（复制到电脑 data.json）</label><textarea id="exportData" readonly onclick="this.select();document.execCommand('copy')"></textarea><div class="btn-row" style="margin-top:4px"><button class="btn" onclick="copyExport()">📋 复制</button></div></div>
+  <div class="setting-group"><label>导入（粘贴 data.json 内容）</label><textarea id="importData" placeholder="粘贴 JSON..."></textarea><div class="btn-row" style="margin-top:4px"><button class="btn primary" onclick="importData()">导入</button><button class="btn" onclick="clearAll()" style="color:#ff6b6b">清空</button></div></div>
 </div>
 
+<div class="toast-container" id="toastBox"></div>
+
 <script>
-const STORAGE_KEY = 'gear_entries';
-const PROMPTS = {
-  1: [
-    '画2×2：横轴和纵轴分别是什么？',
-    '剥三层：现象→结构→根因',
-    '反事实推演：去掉/反转/冲击关键变量会怎样？',
-    '找到隐藏的二元结构',
-    '锚点：四种角色→清醒×行动',
-  ],
-  2: [
-    '他在怕什么？想要什么？懒得动什么？',
-    '疼痛vs焦虑：这个需求在哪个象限？',
-    '利益地图：嘴上说的和实际要的一样吗？',
-    '锚点：生意人最怕被替代',
-    '校验：他为什么没做我建议的事？（答案不能是"懒"）',
-  ],
-  3: [
-    '能不能用一个框架/三句话/一张图装起来？',
-    '写一个行动：这个洞察能让你做什么？',
-    '更新决策日志：预计发生什么？什么信号验证/证伪？',
-    '锚点：疼痛vs焦虑定位表',
-    '这个能产品化吗？最小可行形态是什么？',
-  ],
-};
+const KEY = 'gear_entries';
+const NAMES = {1:'① 拆结构',2:'② 挖人性',3:'③ 压产出'};
+function getE(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch{return[]}}
+function setE(e){localStorage.setItem(KEY,JSON.stringify(e))}
 
-function getEntries() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; }
-}
-function setEntries(entries) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+function nowStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
+
+function toast(msg,type){
+  const box=document.getElementById('toastBox');
+  const el=document.createElement('div');el.className='toast'+(type?' '+type:'');el.textContent=msg;
+  box.appendChild(el);
+  requestAnimationFrame(()=>el.classList.add('show'));
+  setTimeout(()=>{el.classList.remove('show');setTimeout(()=>el.remove(),200)},1400);
 }
 
-function autoResize(el) {
-  el.style.height = 'auto';
-  el.style.height = el.scrollHeight + 'px';
+// Tab
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  const tab=t.dataset.tab;
+  if(tab==='1')document.getElementById('p1').classList.add('active');
+  else if(tab==='2')document.getElementById('p2').classList.add('active');
+  else if(tab==='3')document.getElementById('p3').classList.add('active');
+  else if(tab==='v'){document.getElementById('pv').classList.add('active');review('all');}
+  else if(tab==='s'){document.getElementById('ps').classList.add('active');syncExport();}
+  t.classList.add('active',{1:'g1',2:'g2',3:'g3',v:'gv',s:'gv'}[tab]);
+}));
+
+// Gear 1 steps
+function g1Next(s){
+  document.querySelectorAll('#p1 .step').forEach(x=>x.classList.remove('active'));
+  document.getElementById('g1-step'+s).classList.add('active');
+}
+// Gear 2 steps
+function g2Next(s){
+  document.querySelectorAll('#p2 .step').forEach(x=>x.classList.remove('active'));
+  document.getElementById('g2-step'+s).classList.add('active');
+}
+// Gear 3 steps
+function g3Next(s){
+  document.querySelectorAll('#p3 .step').forEach(x=>x.classList.remove('active'));
+  document.getElementById('g3-step'+s).classList.add('active');
 }
 
-function toast(msg) {
-  const d = document.createElement('div');
-  d.textContent = msg;
-  Object.assign(d.style, {position:'fixed',bottom:'30px',left:'50%',transform:'translateX(-50%)',background:'#4a9eff',color:'#fff',padding:'8px 18px',borderRadius:'8px',fontSize:'14px',zIndex:'9999',opacity:'0',transition:'opacity .2s',whiteSpace:'nowrap',maxWidth:'80%',textAlign:'center',boxShadow:'0 4px 12px rgba(0,0,0,.4)'});
-  document.body.appendChild(d);
-  requestAnimationFrame(() => { d.style.opacity = '1'; });
-  setTimeout(() => { d.style.opacity = '0'; setTimeout(() => d.remove(), 200); }, 1200);
-}
-function saveEntry(gear) {
-  try {
-    const input = document.getElementById(`input-${gear}`);
-    const text = input.value.trim();
-    if (!text) { toast('写点什么再保存'); return; }
-    const entries = getEntries();
-    const now = new Date();
-    const timeStr = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0')+' '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
-    entries.unshift({ gear, text, time: timeStr, ts: now.getTime() });
-    setEntries(entries);
-    input.value = '';
-    input.style.height = 'auto';
+// Save
+function saveGear(g){
+  try{
+    const entries=getE();
+    let combined,gname;
+    const now=nowStr();
+    if(g===1){
+      const s1=document.getElementById('g1-s1').value.trim();
+      const s2=document.getElementById('g1-s2').value.trim();
+      if(!s1||!s2){toast('现象和结构都要填','warn');return}
+      combined='【现象】'+s1+'\n【结构】'+s2;
+      gname='拆结构';
+    }else if(g===2){
+      const s1=document.getElementById('g2-s1').value.trim();
+      const s2=document.getElementById('g2-s2').value.trim();
+      const s3=document.getElementById('g2-s3').value.trim();
+      if(!s1){toast('至少填行为观察','warn');return}
+      combined='【行为】'+s1+(s2?'\n【驱动力】'+s2:'')+(s3?'\n【利益地图】'+s3:'');
+      gname='挖人性';
+    }else if(g===3){
+      const s1=document.getElementById('g3-s1').value.trim();
+      const s2=document.getElementById('g3-s2').value.trim();
+      const s3=document.getElementById('g3-s3').value.trim();
+      if(!s1){toast('至少填洞察','warn');return}
+      combined='【洞察】'+s1+(s2?'\n【产出】'+s2:'')+(s3?'\n【反馈】'+s3:'');
+      gname='压产出';
+    }
+    entries.unshift({gear:g,text:combined,time:now,ts:Date.now()});
+    setE(entries);
+    // Clear
+    [1,2,3].forEach(i=>{
+      const el=document.getElementById(`g${g}-s${i}`);
+      if(el)el.value='';
+    });
+    g1Next(1);g2Next(1);g3Next(1); // reset to step 1
     updateAll();
-    toast('✓ 已保存');
-  } catch(e) {
-    toast('保存失败: '+e.message);
+    toast('✓ '+gname+' 已保存','ok');
+    // 保存后给反馈
+    if(g===1)setTimeout(()=>toast('💡 试试反事实推演：去掉关键变量会怎样？'),1500);
+    if(g===2)setTimeout(()=>toast('💡 校验：他为什么没做你建议的事？（答案不能是"懒"）'),1500);
+    if(g===3)setTimeout(()=>toast('💡 这个产出能变成什么可用的产品？'),1500);
+  }catch(e){toast('保存失败: '+e.message,'warn')}
+}
+
+function updateAll(){
+  const entries=getE();
+  document.getElementById('counter').textContent=entries.length+' 条';
+  const c={1:0,2:0,3:0};
+  entries.forEach(e=>{c[e.gear]=(c[e.gear]||0)+1});
+  document.getElementById('s1').textContent=c[1];
+  document.getElementById('s2').textContent=c[2];
+  document.getElementById('s3').textContent=c[3];
+  // 复盘提示
+  const tip=document.getElementById('review-tip');
+  if(c[1]+c[2]+c[3]>0){
+    if(c[3]<c[1]/2&&c[1]>2)tip.innerHTML='⚠️ 拆得多产得少——记得逼自己压产出';
+    else if(c[1]+c[2]>0&&c[3]===0)tip.innerHTML='💤 有拆有挖，但一条产出都没有';
+    else if(c[1]>c[2]*2)tip.innerHTML='🔄 拆了很多但很少挖人——试着多观察人';
+    else if(c[3]>c[1]&&c[1]>0)tip.innerHTML='✅ 产得比拆多——你在行动，不是空想';
+    else tip.innerHTML='';
+    tip.style.display=tip.innerHTML?'block':'none';
   }
-}
-
-function setPlaceholder(gear) {
-  const ps = PROMPTS[gear];
-  document.getElementById(`input-${gear}`).placeholder = ps[Math.floor(Math.random() * ps.length)];
-}
-
-function switchTab(tab) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab == tab));
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  const panelMap = { 1:'panel-1', 2:'panel-2', 3:'panel-3', v:'panel-v', s:'panel-settings' };
-  document.getElementById(panelMap[tab] || 'panel-1').classList.add('active');
-  if (tab == 'v') renderReview('all');
-}
-
-// Tab click
-document.querySelectorAll('.tab').forEach(t => {
-  t.addEventListener('click', () => switchTab(t.dataset.tab));
-});
-
-function updateAll() {
-  const entries = getEntries();
-  document.getElementById('counter').textContent = `${entries.length} 条记录`;
-  // Stats
-  const counts = {1:0,2:0,3:0};
-  entries.forEach(e => { counts[e.gear] = (counts[e.gear]||0)+1; });
-  document.getElementById('s1').textContent = counts[1];
-  document.getElementById('s2').textContent = counts[2];
-  document.getElementById('s3').textContent = counts[3];
   // Recent per gear
-  [1,2,3].forEach(g => {
-    const el = document.getElementById(`recent-${g}`);
-    const gEntries = entries.filter(e => e.gear == g).slice(0, 3);
-    if (gEntries.length == 0) { el.innerHTML = ''; return; }
-    el.innerHTML = gEntries.map(e => `<div class="entry"><div class="meta">${e.time}</div><div class="text">${escapeHtml(e.text)}</div></div>`).join('');
+  [1,2,3].forEach(g=>{
+    const el=document.getElementById('recent-'+g);
+    const gs=entries.filter(e=>e.gear===g).slice(0,3);
+    if(!gs.length){el.innerHTML='';return}
+    el.innerHTML='<div class="recent-title">最近记录</div>'+gs.map(e=>'<div class="recent-entry"><span class="g-tag gg'+g+'">'+'①②③'[g-1]+'</span><span class="t">'+esc(e.text.slice(0,60))+'</span><span class="time">'+e.time.slice(-5)+'</span></div>').join('');
   });
-  // Export
-  document.getElementById('exportData').value = JSON.stringify(entries, null, 2);
 }
 
-function escapeHtml(t) {
-  const d = document.createElement('div');
-  d.textContent = t;
-  return d.innerHTML;
+function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML}
+
+function review(f){
+  let entries=getE();
+  const now=new Date();
+  const dStr=now.toLocaleDateString('zh-CN');
+  const wk=now.getTime()-7*24*60*60*1000;
+  if(f==='today')entries=entries.filter(e=>e.time.startsWith(nowStr().slice(0,10)));
+  else if(f==='week')entries=entries.filter(e=>e.ts>wk);
+  else if([1,2,3].includes(f))entries=entries.filter(e=>e.gear===f);
+  const el=document.getElementById('timeline');
+  if(!entries.length){el.innerHTML='<div class="empty">无记录</div>';return}
+  el.innerHTML=entries.map(e=>'<div class="entry"><div class="meta"><span><span class="gear-tag g'+e.gear+'">'+(NAMES[e.gear]||'?')+'</span></span><span>'+e.time+'</span></div><div class="text">'+esc(e.text)+'</div></div>').join('');
 }
 
-function renderReview(filter) {
-  let entries = getEntries();
-  const now = new Date();
-  const todayStr = now.toLocaleDateString('zh-CN');
-  const weekAgo = now.getTime() - 7*24*60*60*1000;
-
-  if (filter === 'today') entries = entries.filter(e => e.time.startsWith(todayStr) || new Date(e.ts).toLocaleDateString('zh-CN') === todayStr);
-  else if (filter === 'week') entries = entries.filter(e => e.ts > weekAgo);
-  else if ([1,2,3].includes(filter)) entries = entries.filter(e => e.gear === filter);
-
-  const el = document.getElementById('timeline');
-  if (entries.length === 0) {
-    el.innerHTML = '<div class="empty">暂无记录</div>';
-    return;
-  }
-  const gearNames = {1:'① 拆结构', 2:'② 挖人性', 3:'③ 压产出'};
-  el.innerHTML = entries.map(e =>
-    `<div class="entry">
-      <div class="meta">
-        <span><span class="gear-tag g${e.gear}">${gearNames[e.gear]||'?'}</span></span>
-        <span style="color:#444;font-size:10px">${e.time}</span>
-      </div>
-      <div class="text">${escapeHtml(e.text)}</div>
-    </div>`
-  ).join('');
-}
-
-function filterReview(f) {
-  renderReview(f);
-}
-
-function showSettings() {
-  updateAll();
-  switchTab('s');
-}
-
-function copyExport() {
-  const el = document.getElementById('exportData');
-  el.select();
-  document.execCommand('copy');
-  alert('已复制');
-}
-
-function importFromData() {
-  const raw = document.getElementById('importData').value.trim();
-  if (!raw) return;
-  try {
-    const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed)) throw new Error('格式错误');
-    setEntries(parsed);
-    document.getElementById('importData').value = '';
-    updateAll();
-    alert(`已导入 ${parsed.length} 条记录`);
-  } catch(e) {
-    alert('JSON 格式错误，请检查');
-  }
-}
-
-function clearAll() {
-  if (confirm('确定清空所有记录？此操作不可恢复。')) {
-    setEntries([]);
-    updateAll();
-  }
-}
-
-// 双击清空textarea
-document.querySelectorAll('textarea').forEach(t => {
-  t.addEventListener('dblclick', () => { t.value = ''; t.style.height = 'auto'; });
-});
+function showSettings(){syncExport();document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.getElementById('ps').classList.add('active')}
+function syncExport(){document.getElementById('exportData').value=JSON.stringify(getE(),null,2)}
+function copyExport(){const el=document.getElementById('exportData');el.select();document.execCommand('copy');toast('已复制')}
+function importData(){try{const p=JSON.parse(document.getElementById('importData').value.trim());if(!Array.isArray(p))throw 1;setE(p);document.getElementById('importData').value='';updateAll();toast('已导入 '+p.length+' 条','ok')}catch{toast('JSON格式错误','warn')}}
+function clearAll(){if(confirm('清空所有记录？')){setE([]);updateAll();toast('已清空','warn')}}
 
 // Init
 updateAll();
-
-// Keyboard shortcut: Ctrl+Enter to save on any textarea
-document.addEventListener('keydown', e => {
-  if (e.ctrlKey && e.key === 'Enter') {
-    const active = document.querySelector('.panel.active textarea');
-    if (active) {
-      const id = active.id;
-      const gear = parseInt(id.replace('input-', ''));
-      if (gear) saveEntry(gear);
-    }
-  }
-});
 </script>
 </body>
 </html>
